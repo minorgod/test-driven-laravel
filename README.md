@@ -1,5 +1,3 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
-
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
@@ -7,55 +5,41 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-## About Laravel
+# About Test Driven Laravel
+This repository is not the course! The course was written by Adam Wathan and can be purchased from him here:
+https://testdrivenlaravel.com/
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+If you have not purchased the course, this repository will be of little to no value for you. This repository is simply where I'm working through the course content and documenting a few issues I encounter along the way. 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+First and foremost is the issue of doing the course using Laravel 7.x. It was originally created for Laravel 5.3. I'm running through the course using Laravel 7.x (version 7.24 at the time of this writing) and have run into a few problems simply getting started. The course itself covers upgrading to Laravel 5.4, then 5.5, but this seemed a silly exercise to me since I'm creating all my new projects in Laravel 7.x and wanted to put my new knowledge directly to work. And so here's what you need to do to take the course in Laravel 7.x. 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Add the `browser-kit-testing` composer package
 
-## Learning Laravel
+The browser-kit-testing package allows you to use older Laravel 5.3 style testing functionality. Much of that functionality was migrated to other packages in later releases. Specifically "Frontend" tests were largely migrated to Laravel Dusk which runs a full-on headless browser, but Dusk is actually much much slower for running tests that only need to make simple HTTP requests. At least initially we won't need to be testing javascript or intricate frontend layout stuff, so it makes perfect sense to keep using the old style tests. In newer Laravel releases, the same sorts of simple HTTP tests are still possible without using Dusk, but the syntax is slightly different so, for compatibility with this course, just install browser-kit-testing and live with knowing you might want to use slightly different testing libs with slightly different syntax in the future. 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```
+composer require laravel/browser-kit-testing --dev
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Modify your application's base `TestCase` class 
 
-## Laravel Sponsors
+Tweak `/tests/TestCase.php` to extend `Laravel\BrowserKitTesting\TestCase` instead of `Illuminate\Foundation\Testing\TestCase` and add the $base_url property. In the end, your TestCase.php should look like this:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```php
+<?php
+namespace Tests;
+// Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
 
-### Premium Partners
+abstract class TestCase extends BaseTestCase
+{
+    use CreatesApplication;
+    public $baseUrl = 'http://localhost';
+    // ...
+}
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+Now run `composer dump-autoload` just to be sure. 
 
-## Contributing
+Now run `artisan test` and your tests should start running properly. I mean, they will fail properly and you can get down to business writing the code to make them pass. Happy coding!
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
