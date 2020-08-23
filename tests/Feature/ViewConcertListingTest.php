@@ -46,6 +46,40 @@ class ViewConcertListingTest extends TestCase
 
         // Assert
         // See the concert details
-     
+        $this->see('The Red Chord');
+        $this->see('with Animosity and Lethargy');
+        $this->see('December 13th');
+        $this->see('32.50');
+        $this->see('The Mosh Pit');
+        $this->see('123 Example Lane');
+        $this->see('Laraville');
+        $this->see('ON');
+        $this->see('17916');
+        $this->see('For tickets, call (555) 555-5555.');
+
+        /**
+         * You could do the above using the newer Laravel 5.4 HTTP testing functionality
+         * using the "get" and "assertSee" methods (see below), but for this course, lets stick
+         * with the syntax afforded by the browser-testing-kit package we added for
+         * backwards compatiblity with older Laravel feature tests.
+         * @link https://laravel.com/docs/5.4/http-tests
+         */
+
+        /*
+        $response = $this->get('/concerts/' . $concert->id);
+
+        // Assert
+        // See the concert details
+        $response->assertSee('The Red Chord');
+        $response->assertSee('with Animosity and Lethargy');
+        $response->assertSee('December 13th');
+        $response->assertSee('32.50');
+        $response->assertSee('The Mosh Pit');
+        $response->assertSee('123 Example Lane');
+        $response->assertSee('Laraville');
+        $response->assertSee('ON');
+        $response->assertSee('17916');
+        $response->assertSee('For tickets, call (555) 555-5555.');
+        */
     }
 }
