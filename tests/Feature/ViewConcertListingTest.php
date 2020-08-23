@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Concert;
 use Carbon\Carbon;
 
 
@@ -41,10 +42,10 @@ class ViewConcertListingTest extends TestCase
 
         // Act
         // View the concert listing
-
+        $this->visit('/concerts/' . $concert->id);
 
         // Assert
         // See the concert details
-
+     
     }
 }
