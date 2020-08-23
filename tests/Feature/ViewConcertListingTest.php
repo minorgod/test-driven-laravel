@@ -19,7 +19,7 @@ class ViewConcertListingTest extends TestCase
      * @return void
      */
     /** @test */
-    public function user_can_view_a_concert_listing()
+    public function user_can_view_a_published_concert_listing()
     {
         /**
          * Use Direct Model Access design for tests - no UI required, directly access the models in our domain logic
@@ -37,6 +37,7 @@ class ViewConcertListingTest extends TestCase
             'city' => 'Laraville',
             'state' => 'ON',
             'zip' => '17916',
+            'published_at' => '-1 week',
             'additional_information' => 'For tickets, call (555) 555-5555.'
         ]);
 
@@ -81,5 +82,28 @@ class ViewConcertListingTest extends TestCase
         $response->assertSee('17916');
         $response->assertSee('For tickets, call (555) 555-5555.');
         */
+    }
+
+    /** @test */
+    public function user_cannot_view_unpublished_concert_listing()
+    {
+        /**
+         * Use Direct Model Access design for tests - no UI required, directly access the models in our domain logic
+         */
+
+        // Arrange
+        // Create a concert
+        $concert = factory(Concert::class)->create([
+            'published_at' => null
+        ]);
+
+        // Act
+        // View the concert listing
+        $this->get('/concerts/' . $concert->id);
+
+        // Assert
+        $this->assertResponseStatus(404);
+
+
     }
 }

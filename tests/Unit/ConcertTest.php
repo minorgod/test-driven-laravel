@@ -5,24 +5,17 @@ namespace Tests\Unit;
 use App\Concert;
 use Carbon\Carbon;
 //use PHPUnit\Framework\TestCase;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ConcertTest extends TestCase
 {
 
-    //use DatabaseMigrations;
-
     /**
-     * A basic test example.
-     *
-     * @return void
+     * Unit tests for Concert model.
      */
-    public function testConcertTest()
-    {
-        $this->assertTrue(true);
-    }
+
+    use DatabaseMigrations;
 
     /** @test */
     public function can_get_formatted_date(){
@@ -57,5 +50,24 @@ class ConcertTest extends TestCase
         $this->assertEquals('20.00', $concert->ticket_price_in_dollars);
     }
 
+    /** @test */
+    public function concerts_with_a_published_at_date_are_published(){
+        //create concert with a known date using our model factory
+        $publishedConcertA = factory(Concert::class)->create([
+            'published_at' => Carbon::parse('-1 week'),
+        ]);
+        $publishedConcertB = factory(Concert::class)->create([
+            'published_at' => Carbon::parse('-1 week'),
+        ]);
+        $unpublishedConcert = factory(Concert::class)->create([
+            'published_at' => null,
+        ]);
+
+        //verify the date is formatted as expected
+        $publishedConcerts = Concert::published()->get();
+        $this->assertTrue($publishedConcerts->contains($publishedConcertA));
+        $this->assertTrue($publishedConcerts->contains($publishedConcertB));
+        $this->assertFalse($publishedConcerts->contains($unpublishedConcert));
+    }
 
 }

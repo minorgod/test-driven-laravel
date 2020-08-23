@@ -1,12 +1,14 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/** @var Factory $factory */
 
 
+use App\Concert;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factory;
 
-$factory->define(\App\Concert::class, function (Faker $faker) {
+$factory->define(Concert::class, function (Faker $faker) {
     return [
         'title' => 'Example Band',
         'subtitle' => 'with the Fake Openers',

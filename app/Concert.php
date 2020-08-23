@@ -30,4 +30,12 @@ class Concert extends Model
         return number_format($this->ticket_price / 100, 2);
     }
 
+    /**
+     * @param \Illuminate\Database\Query\Builder $query
+     * @return \Illuminate\Database\Query\Builder $query
+     */
+    public function scopePublished($query){
+        return $query->whereNotNull('published_at');
+    }
+
 }
