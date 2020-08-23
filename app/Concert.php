@@ -38,4 +38,12 @@ class Concert extends Model
         return $query->whereNotNull('published_at');
     }
 
+    /**
+     * @param \Illuminate\Database\Query\Builder $query
+     * @return \Illuminate\Database\Query\Builder $query
+     */
+    public function scopeUnpublished($query){
+        return $query->whereNull('published_at');
+    }
+
 }

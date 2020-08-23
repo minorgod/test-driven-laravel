@@ -27,7 +27,7 @@ class ViewConcertListingTest extends TestCase
 
         // Arrange
         // Create a concert
-        $concert = Concert::create([
+        $concert = factory(Concert::class)->states('published')->create([
             'title' => 'The Red Chord',
             'subtitle' => 'with Animosity and Lethargy',
             'date' => Carbon::parse('December 13th, 2016 8:00pm'),
@@ -37,7 +37,6 @@ class ViewConcertListingTest extends TestCase
             'city' => 'Laraville',
             'state' => 'ON',
             'zip' => '17916',
-            'published_at' => '-1 week',
             'additional_information' => 'For tickets, call (555) 555-5555.'
         ]);
 
@@ -93,9 +92,7 @@ class ViewConcertListingTest extends TestCase
 
         // Arrange
         // Create a concert
-        $concert = factory(Concert::class)->create([
-            'published_at' => null
-        ]);
+        $concert = factory(Concert::class)->states('unpublished')->create();
 
         // Act
         // View the concert listing
