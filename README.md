@@ -100,3 +100,52 @@ However, since it's a pain to go there and scroll down 3/4 of the page to find i
 > ```
 >
 > Once you have created this class, make sure to update all of your tests to extend your new `BrowserKitTestCase` class. This will allow all of your tests written on Laravel 5.3 to continue running on Laravel 5.4. If you choose, you can slowly begin to port them over to the new [Laravel 5.4 test syntax](https://laravel.com/docs/5.4/http-tests) or [Laravel Dusk](https://laravel.com/docs/5.4/dusk).
+>
+## Getting Started With Validation
+In this section of the course, Adam shows how you can create a function to easily diable Laravel's built-in exception handling so you can see the real exceptions in your tests. To do this he creates a custom function in the TestCase class, but it will not quite work in Laravel 7. You need to pass a Throwable instead of an Exception to the `report` and `render` functions. Here's a Laravel 7 version of the method...
+```php
+/**
+     * This overrides Laravel's automatic exception handling
+     */
+    protected function disableExceptionHandling() {
+        $this->app->instance(ExceptionHandler::class, new class extends Handler{
+            public function __construct(){}
+            public function report(Throwable $e){}
+            public function render($request, Throwable $e){
+                throw $e;
+            }
+        });
+    }
+```
+
+### In the email_is_required_to_purchase_tickets test...
+...instead of the using the assertArrayHasKey function to make sure the response contains an email validation error message, use the assertJsonValidationErrors on the `$this->response` object....
+```php
+    /** @test */
+    public function email_is_required_to_purchase_tickets(){
+
+        // Arrange
+        $paymentGateway = new FakePaymentGateway;
+        // Bind the FakePaymentGateway class to the PaymentGateway interface so we can type hint the
+        // interface in the controller methods.
+        $this->app->instance(PaymentGateway::class, $paymentGateway);
+
+        // Create a concert
+        $concert = factory(Concert::class)->create();
+
+        // Act
+        // Purchase concert tickets
+        $this->json('POST', "/concerts/{$concert->id}/orders", [
+            'ticket_quantity' => 3,
+            'payment_token' => $paymentGateway->getValidTestToken(),
+        ]);
+
+        // Laravel uses response code 422 for validation error responses
+        $this->assertResponseStatus(422);
+
+        // Assert that there are json validation errors
+        $this->response->assertJsonValidationErrors('email');
+
+    }
+
+```

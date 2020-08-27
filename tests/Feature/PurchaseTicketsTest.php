@@ -8,6 +8,7 @@ use App\Concert;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class PurchaseTicketsTest extends TestCase
@@ -53,6 +54,33 @@ class PurchaseTicketsTest extends TestCase
         $order = $concert->orders()->where('email', 'john@example.com')->first();
         $this->assertNotNull($order);
         $this->assertEquals(3, $order->tickets->count());
+
+    }
+
+    /** @test */
+    public function email_is_required_to_purchase_tickets(){
+
+        // Arrange
+        $paymentGateway = new FakePaymentGateway;
+        // Bind the FakePaymentGateway class to the PaymentGateway interface so we can type hint the
+        // interface in the controller methods.
+        $this->app->instance(PaymentGateway::class, $paymentGateway);
+
+        // Create a concert
+        $concert = factory(Concert::class)->create();
+
+        // Act
+        // Purchase concert tickets
+        $this->json('POST', "/concerts/{$concert->id}/orders", [
+            'ticket_quantity' => 3,
+            'payment_token' => $paymentGateway->getValidTestToken(),
+        ]);
+
+        // Laravel uses response code 422 for validation error responses
+        $this->assertResponseStatus(422);
+
+        // Assert that there are json validation errors
+        $this->response->assertJsonValidationErrors('email');
 
     }
 }
