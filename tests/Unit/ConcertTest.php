@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Concert;
 use Carbon\Carbon;
+
 //use PHPUnit\Framework\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -18,7 +19,8 @@ class ConcertTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function can_get_formatted_date(){
+    public function can_get_formatted_date()
+    {
         //create concert with a known date using our model factory
         $concert = factory(Concert::class)->make([
             'date' => Carbon::parse('December 1st, 2016 8:00pm'),
@@ -29,7 +31,8 @@ class ConcertTest extends TestCase
     }
 
     /** @test */
-    public function can_get_formatted_start_time(){
+    public function can_get_formatted_start_time()
+    {
         //create concert with a known date using our model factory
         $concert = factory(Concert::class)->make([
             'date' => Carbon::parse('2016-12-01 17:00:00'),
@@ -40,7 +43,8 @@ class ConcertTest extends TestCase
     }
 
     /** @test */
-    public function can_get_ticket_price_in_dollars(){
+    public function can_get_ticket_price_in_dollars()
+    {
         //create concert with a known date using our model factory
         $concert = factory(Concert::class)->make([
             'ticket_price' => 2000,
@@ -51,7 +55,8 @@ class ConcertTest extends TestCase
     }
 
     /** @test */
-    public function concerts_with_a_published_at_date_are_published(){
+    public function concerts_with_a_published_at_date_are_published()
+    {
         //create concert with a known date using our model factory
         $publishedConcertA = factory(Concert::class)->create([
             'published_at' => Carbon::parse('-1 week'),
@@ -68,6 +73,16 @@ class ConcertTest extends TestCase
         $this->assertTrue($publishedConcerts->contains($publishedConcertA));
         $this->assertTrue($publishedConcerts->contains($publishedConcertB));
         $this->assertFalse($publishedConcerts->contains($unpublishedConcert));
+    }
+
+    /** @test */
+    public function can_order_concert_tickets()
+    {
+        $concert = factory(Concert::class)->create();
+        $order = $concert->orderTickets('jane@example.com', 3);
+
+        $this->assertEquals('jane@example.com', $order->email);
+        $this->assertEquals(3, $order->tickets()->count());
     }
 
 }

@@ -46,4 +46,20 @@ class Concert extends Model
         return $query->whereNull('published_at');
     }
 
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
+
+    public function orderTickets($email, $ticketQuantity){
+
+        //$order = factory(Order::class)->create(['concert_id'=>$this->id, 'email'=>$email]);
+
+        $order = $this->orders()->create(['email' => $email]);
+
+        foreach (range(1, $ticketQuantity) as $i) {
+            $order->tickets()->create([]);
+        }
+        return $order;
+    }
+
 }
