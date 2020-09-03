@@ -6,6 +6,10 @@ use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentFailedException;
 use Tests\TestCase;
 
+/**
+ * Class FakePaymentGatewayTest
+ * @package Billing
+ */
 class FakePaymentGatewayTest extends TestCase
 {
     /**

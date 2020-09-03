@@ -1,12 +1,21 @@
 <?php
 
 namespace Tests;
-use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Foundation\Application;
+use App\Exceptions\Handler;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
+use Laravel\BrowserKitTesting\TestResponse;
+use Throwable;
 
+/**
+ * Class BrowserKitTestCase
+ * @package Tests
+ */
 abstract class BrowserKitTestCase extends BaseTestCase
 {
+
+    use CreatesApplication;
+
     /**
      * The base URL of the application.
      *
@@ -14,17 +23,41 @@ abstract class BrowserKitTestCase extends BaseTestCase
      */
     public $baseUrl = 'http://localhost';
 
-    /**
-     * Creates the application.
-     *
-     * @return Application
-     */
-    public function createApplication()
+
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
-        $app = require __DIR__.'/../bootstrap/app.php';
+        parent::__construct($name, $data, $dataName);
 
-        $app->make(Kernel::class)->bootstrap();
+    }
 
-        return $app;
+    /**
+     * This overrides Laravel's automatic exception handling
+     */
+    protected function disableExceptionHandling() {
+        $this->app->instance(ExceptionHandler::class, new class extends Handler{
+            public function __construct(){}
+
+            /**
+             * Report or log an exception.
+             *
+             * @param  \Throwable  $e
+             * @return void
+             *
+             * @throws \Exception
+             */
+            public function report(Throwable $e){}
+
+            /**
+             * Render an exception into an HTTP response.
+             *
+             * @param \Illuminate\Http\Request $request
+             * @param \Throwable $e
+             *
+             * @throws \Throwable
+             */
+            public function render($request, Throwable $e){
+                throw $e;
+            }
+        });
     }
 }

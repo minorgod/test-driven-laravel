@@ -2,12 +2,16 @@
 
 namespace Tests;
 
-//use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use App\Exceptions\Handler;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
+// use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
 use Throwable;
 
+/**
+ * Class TestCase
+ * @package Tests
+ */
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
