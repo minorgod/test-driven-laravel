@@ -61,9 +61,8 @@ class PurchaseTicketsTest extends BrowserKitTestCase
 
         // Arrange
         // Create a concert
-        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250]);
+        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250])->addTickets(3);
 
-        $concert->addTickets(3);
 
         // Act
         // Purchase concert tickets
@@ -80,9 +79,12 @@ class PurchaseTicketsTest extends BrowserKitTestCase
         $this->assertEquals(9750, $this->paymentGateway->totalCharges());
 
         // Make sure that an order exists for this customer
-        $order = $concert->orders()->where('email', 'john@example.com')->first();
-        $this->assertNotNull($order);
-        $this->assertEquals(3, $order->tickets->count());
+        $this->assertTrue($concert->hasOrderFor('john@example.com'));
+
+        // Make sure there's 3 tickets in the order
+        $this->assertEquals(3, $concert->ordersFor( 'john@example.com')->first()->ticketQuantity());
+
+
     }
 
     /**
@@ -96,8 +98,8 @@ class PurchaseTicketsTest extends BrowserKitTestCase
 
         // Arrange
         // Create a concert
-        $concert = factory(Concert::class)->states('unpublished')->create();
-        $concert->addTickets(3);
+        $concert = factory(Concert::class)->states('unpublished')->create()->addTickets(3);
+
         // Act
         // Purchase concert tickets
         $this->orderTickets($concert, [
@@ -110,7 +112,7 @@ class PurchaseTicketsTest extends BrowserKitTestCase
         $this->assertResponseStatus(404);
 
         // Make sure no orders were created
-        $this->assertEquals(0, $concert->orders()->count());
+        $this->assertFalse($concert->hasOrderFor('john@example.com'));
 
         // Make sure customer was not charged
         $this->assertEquals(0, $this->paymentGateway->totalCharges());
@@ -122,8 +124,7 @@ class PurchaseTicketsTest extends BrowserKitTestCase
         $this->disableExceptionHandling();
         // Arrange
         // Create a concert
-        $concert = factory(Concert::class)->states('published')->create();
-        $concert->addTickets(3);
+        $concert = factory(Concert::class)->states('published')->create()->addTickets(3);
 
         // Act
         // Purchase concert tickets
@@ -137,21 +138,20 @@ class PurchaseTicketsTest extends BrowserKitTestCase
         $this->assertResponseStatus(422);
 
         // Make sure that an order does not exists for this customer
-        $order = $concert->orders()->where('email', 'john@example.com')->first();
-        $this->assertNull($order);
+        $this->assertFalse($concert->hasOrderFor('john@example.com'));
     }
 
     /** @test */
     public function cannot_purchase_more_tickets_than_remain()
     {
 
-        $this->disableExceptionHandling();
+        //$this->disableExceptionHandling();
         // Arrange
-        // Create a concert
-        $concert = factory(Concert::class)->states('published')->create();
+        // Create a concert with 50 tickets available
+        $concert = factory(Concert::class)
+            ->states('published')->create()
+            ->addTickets(50);
 
-        // Make 50 tickets available for sale
-        $concert->addTickets(50);
 
         // Act
         // Purchase concert tickets
@@ -165,10 +165,9 @@ class PurchaseTicketsTest extends BrowserKitTestCase
         $this->assertResponseStatus(422);
 
         //make sure not orders are created
-        $order = $concert->orders()->where('email', '=', 'john@example.com')->first();
-        $this->assertNull($order);
+        $this->assertFalse($concert->hasOrderFor('john@example.com'));
 
-        //make sure customer is not charge
+        //make sure customer is not charged
         $this->assertEquals(0, $this->paymentGateway->totalCharges());
 
         //make sure there's still 50 tickets left
@@ -180,9 +179,10 @@ class PurchaseTicketsTest extends BrowserKitTestCase
     {
 
         // Arrange
-        // Create a concert
-        $concert = factory(Concert::class)->states('published')->create();
-        $concert->addTickets(3);
+        // Create a concert with 3 tickets available
+        $concert = factory(Concert::class)
+            ->states('published')->create()
+            ->addTickets(3);
 
         // Act
         // Purchase concert tickets
@@ -200,9 +200,10 @@ class PurchaseTicketsTest extends BrowserKitTestCase
     {
 
         // Arrange
-        // Create a concert
-        $concert = factory(Concert::class)->states('published')->create();
-        $concert->addTickets(3);
+        // Create a concert with 3 tickets available
+        $concert = factory(Concert::class)
+            ->states('published')->create()
+            ->addTickets(3);
 
         // Act
         // Purchase concert tickets
@@ -222,9 +223,10 @@ class PurchaseTicketsTest extends BrowserKitTestCase
     {
 
         // Arrange
-        // Create a concert
-        $concert = factory(Concert::class)->states('published')->create();
-        $concert->addTickets(3);
+        // Create a concert with 3 tickets available
+        $concert = factory(Concert::class)
+            ->states('published')->create()
+            ->addTickets(3);
 
         // Act
         // Purchase concert tickets
@@ -243,9 +245,10 @@ class PurchaseTicketsTest extends BrowserKitTestCase
     {
 
         // Arrange
-        // Create a concert
-        $concert = factory(Concert::class)->states('published')->create();
-        $concert->addTickets(3);
+        // Create a concert with 3 tickets available
+        $concert = factory(Concert::class)
+            ->states('published')->create()
+            ->addTickets(3);
 
         // Act
         // Purchase concert tickets
@@ -265,8 +268,10 @@ class PurchaseTicketsTest extends BrowserKitTestCase
 
         // Arrange
         // Create a concert
-        $concert = factory(Concert::class)->states('published')->create();
-        $concert->addTickets(3);
+        // Create a concert with 3 tickets available
+        $concert = factory(Concert::class)
+            ->states('published')->create()
+            ->addTickets(3);
 
         // Act
         // Purchase concert tickets

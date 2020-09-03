@@ -39,12 +39,21 @@ class Order extends Model
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function cancel()
     {
         foreach ($this->tickets as $ticket) {
-            $ticket->update(['order_id' => null]);
+            $ticket->release();
         }
         $this->delete();
+    }
+
+    /**
+     * @return int
+     */
+    public function ticketQuantity()
+    {
+        return $this->tickets()->count();
     }
 }

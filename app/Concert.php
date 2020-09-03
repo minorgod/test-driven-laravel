@@ -130,7 +130,7 @@ class Concert extends Model
 
         $tickets = $this->tickets()->available()->take($ticketQuantity)->get();
 
-        if($tickets->count() < $ticketQuantity) {
+        if ($tickets->count() < $ticketQuantity) {
             throw new NotEnoughTicketsException();
         }
 
@@ -144,12 +144,14 @@ class Concert extends Model
 
     /**
      * @param $quantity
+     * @return \App\Concert
      */
     public function addTickets($quantity)
     {
         foreach (range(1, $quantity) as $i) {
             $this->tickets()->create([]);
         }
+        return $this;
     }
 
 
@@ -159,5 +161,24 @@ class Concert extends Model
     public function ticketsRemaining()
     {
         return $this->tickets()->available()->count();
+    }
+
+
+    /**
+     * @param $customerEmail
+     * @return bool
+     */
+    public function hasOrderFor($customerEmail)
+    {
+        return $this->orders()->where('email', $customerEmail)->count() > 0;
+    }
+
+    /**
+     * @param $customerEmail
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function ordersFor($customerEmail)
+    {
+        return $this->orders()->where('email', $customerEmail)->get();
     }
 }
