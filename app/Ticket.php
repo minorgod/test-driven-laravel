@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Ticket
@@ -20,7 +19,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Ticket whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ticket whereOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ticket whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Builder
+ * @method static \Illuminate\Database\Eloquent\Builder|Ticket available()
  */
 class Ticket extends Model
 {
@@ -36,16 +36,21 @@ class Ticket extends Model
         return $this->belongsTo(Order::class);
     }
 
+
     /**
-     * @param $query
-     * @return mixed
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeAvailable($query)
+    public function scopeAvailable(\Illuminate\Database\Eloquent\Builder $query)
     {
         return $query->whereNull('order_id');
     }
 
-    public function release(){
+    /**
+     * @return void
+     */
+    public function release()
+    {
         //$this->order_id = null;
         $this->update(['order_id' => null]);
     }

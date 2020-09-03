@@ -46,7 +46,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Concert whereVenue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Concert whereVenueAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Concert whereZip($value)
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Builder
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Ticket[] $tickets
+ * @property-read int|null $tickets_count
  */
 class Concert extends Model
 {
@@ -125,8 +127,6 @@ class Concert extends Model
      */
     public function orderTickets($email, $ticketQuantity)
     {
-
-        //$order = factory(Order::class)->create(['concert_id'=>$this->id, 'email'=>$email]);
 
         $tickets = $this->tickets()->available()->take($ticketQuantity)->get();
 
