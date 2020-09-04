@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoTestManager">
+    <enabled-run-configurations>
+      <run-configuration type="PHPUnitRunConfigurationType" name="OrderTest.converting_to_an_array" />
+      <run-configuration type="PHPUnitRunConfigurationType" name="PurchaseTicketsTest.customer_can_purchase_tickets_to_a_published_concert" />
+      <run-configuration type="PHPUnitRunConfigurationType" name="tests" />
+      <run-configuration type="PHPUnitRunConfigurationType" name="OrderTest.creating_an_order_from_tickets_and_email" />
+    </enabled-run-configurations>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="42930b6b-1844-4ba7-b2e7-9817469c9c9d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Concert.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Concert.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ConcertOrdersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ConcertOrdersController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Order.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Ticket.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ticket.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_08_27_202702_create_orders_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_08_27_202702_create_orders_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/PurchaseTicketsTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/PurchaseTicketsTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Unit/OrderTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Unit/OrderTest.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -176,20 +188,20 @@
     </key>
   </component>
   <component name="RunManager" selected="PHPUnit.tests">
-    <configuration name="ConcertTest.cannot_order_tickets_that_have_already_been_purchased" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Unit\ConcertTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Unit/ConcertTest.php" method="cannot_order_tickets_that_have_already_been_purchased" scope="Method" />
+    <configuration name="OrderTest.converting_to_an_array" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Unit\OrderTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Unit/OrderTest.php" method="converting_to_an_array" scope="Method" />
       <method v="2" />
     </configuration>
-    <configuration name="ConcertTest.tickets_remaining_does_not_include_tickets_associated_with_an_orders" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Unit\ConcertTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Unit/ConcertTest.php" method="tickets_remaining_does_not_include_tickets_associated_with_an_orders" scope="Method" />
+    <configuration name="OrderTest.creating_an_order_from_tickets_and_email" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Unit\OrderTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Unit/OrderTest.php" method="creating_an_order_from_tickets_and_email" scope="Method" />
       <method v="2" />
     </configuration>
-    <configuration name="ConcertTest.trying_to_purchase_more_tickets_than_remain_throws_an_exception" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Unit\ConcertTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Unit/ConcertTest.php" method="trying_to_purchase_more_tickets_than_remain_throws_an_exception" scope="Method" />
+    <configuration name="PurchaseTicketsTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\PurchaseTicketsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/PurchaseTicketsTest.php" scope="Class" />
       <method v="2" />
     </configuration>
-    <configuration name="FakePaymentGatewayTest.charges_with_an_invalid_payment_token_fail" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Billing\FakePaymentGatewayTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Unit/Billing/FakePaymentGatewayTest.php" method="charges_with_an_invalid_payment_token_fail" scope="Method" />
+    <configuration name="PurchaseTicketsTest.customer_can_purchase_tickets_to_a_published_concert" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\PurchaseTicketsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/PurchaseTicketsTest.php" method="customer_can_purchase_tickets_to_a_published_concert" scope="Method" />
       <method v="2" />
     </configuration>
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
@@ -202,11 +214,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="PHPUnit.PurchaseTicketsTest.customer_can_purchase_tickets_to_a_published_concert" />
         <item itemvalue="PHPUnit.tests" />
-        <item itemvalue="PHPUnit.FakePaymentGatewayTest.charges_with_an_invalid_payment_token_fail" />
-        <item itemvalue="PHPUnit.ConcertTest.cannot_order_tickets_that_have_already_been_purchased" />
-        <item itemvalue="PHPUnit.ConcertTest.trying_to_purchase_more_tickets_than_remain_throws_an_exception" />
-        <item itemvalue="PHPUnit.ConcertTest.tickets_remaining_does_not_include_tickets_associated_with_an_orders" />
+        <item itemvalue="PHPUnit.PurchaseTicketsTest" />
+        <item itemvalue="PHPUnit.OrderTest.creating_an_order_from_tickets_and_email" />
+        <item itemvalue="PHPUnit.OrderTest.converting_to_an_array" />
       </list>
     </recent_temporary>
   </component>
@@ -238,7 +250,8 @@
       <workItem from="1599094244365" duration="84000" />
       <workItem from="1599094479539" duration="156000" />
       <workItem from="1599095953423" duration="10494000" />
-      <workItem from="1599106556727" duration="526000" />
+      <workItem from="1599106556727" duration="1270000" />
+      <workItem from="1599192419741" duration="9660000" />
     </task>
     <servers />
   </component>
@@ -278,6 +291,10 @@
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
     <state x="598" y="378" key="#com.intellij.execution.impl.EditConfigurationsDialog/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599075060164" />
+    <state x="1794" y="80" width="1532" height="1246" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1599201518921">
+      <screen x="0" y="0" width="3440" height="1440" />
+    </state>
+    <state x="1794" y="80" width="1532" height="1246" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599201518921" />
     <state x="752" y="522" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1599081986189">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
@@ -294,50 +311,50 @@
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
     <state x="590" y="478" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599105724964" />
-    <state x="1279" y="388" width="490" height="574" key="#xdebugger.evaluate" timestamp="1599101098921">
+    <state x="1279" y="388" width="490" height="574" key="#xdebugger.evaluate" timestamp="1599200546872">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
-    <state x="1279" y="388" width="490" height="574" key="#xdebugger.evaluate/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599101098921" />
-    <state width="393" height="466" key="DebuggerActiveHint" timestamp="1598564164733">
+    <state x="1279" y="388" width="490" height="574" key="#xdebugger.evaluate/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599200546872" />
+    <state width="445" height="466" key="DebuggerActiveHint" timestamp="1599197554561">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
-    <state width="393" height="466" key="DebuggerActiveHint/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1598564164733" />
+    <state width="445" height="466" key="DebuggerActiveHint/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599197554561" />
     <state x="786" y="474" key="FileChooserDialogImpl" timestamp="1599083602568">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
     <state x="786" y="474" key="FileChooserDialogImpl/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599083602568" />
-    <state width="1171" height="396" key="GridCell.Tab.0.bottom" timestamp="1599106537684">
+    <state width="1285" height="343" key="GridCell.Tab.0.bottom" timestamp="1599202731346">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
-    <state width="1171" height="396" key="GridCell.Tab.0.bottom/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599106537684" />
-    <state width="1171" height="396" key="GridCell.Tab.0.center" timestamp="1599106537684">
+    <state width="1285" height="343" key="GridCell.Tab.0.bottom/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599202731346" />
+    <state width="1285" height="343" key="GridCell.Tab.0.center" timestamp="1599202731346">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
-    <state width="1171" height="396" key="GridCell.Tab.0.center/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599106537684" />
-    <state width="1171" height="396" key="GridCell.Tab.0.left" timestamp="1599106537684">
+    <state width="1285" height="343" key="GridCell.Tab.0.center/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599202731346" />
+    <state width="1285" height="343" key="GridCell.Tab.0.left" timestamp="1599202731346">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
-    <state width="1171" height="396" key="GridCell.Tab.0.left/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599106537684" />
-    <state width="1171" height="396" key="GridCell.Tab.0.right" timestamp="1599106537684">
+    <state width="1285" height="343" key="GridCell.Tab.0.left/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599202731346" />
+    <state width="1285" height="343" key="GridCell.Tab.0.right" timestamp="1599202731346">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
-    <state width="1171" height="396" key="GridCell.Tab.0.right/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599106537684" />
-    <state width="1065" height="430" key="GridCell.Tab.1.bottom" timestamp="1599106537677">
+    <state width="1285" height="343" key="GridCell.Tab.0.right/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599202731346" />
+    <state width="835" height="452" key="GridCell.Tab.1.bottom" timestamp="1599200974802">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
-    <state width="1065" height="430" key="GridCell.Tab.1.bottom/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599106537677" />
-    <state width="1065" height="430" key="GridCell.Tab.1.center" timestamp="1599106537676">
+    <state width="835" height="452" key="GridCell.Tab.1.bottom/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599200974802" />
+    <state width="835" height="452" key="GridCell.Tab.1.center" timestamp="1599200974802">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
-    <state width="1065" height="430" key="GridCell.Tab.1.center/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599106537676" />
-    <state width="1065" height="430" key="GridCell.Tab.1.left" timestamp="1599106537676">
+    <state width="835" height="452" key="GridCell.Tab.1.center/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599200974802" />
+    <state width="835" height="452" key="GridCell.Tab.1.left" timestamp="1599200974802">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
-    <state width="1065" height="430" key="GridCell.Tab.1.left/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599106537676" />
-    <state width="1065" height="430" key="GridCell.Tab.1.right" timestamp="1599106537677">
+    <state width="835" height="452" key="GridCell.Tab.1.left/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599200974802" />
+    <state width="835" height="452" key="GridCell.Tab.1.right" timestamp="1599200974802">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
-    <state width="1065" height="430" key="GridCell.Tab.1.right/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599106537677" />
+    <state width="835" height="452" key="GridCell.Tab.1.right/3440.0.640.960/0.0.3440.1440@0.0.3440.1440" timestamp="1599200974802" />
     <state width="1065" height="430" key="GridCell.Tab.2.bottom" timestamp="1599106537677">
       <screen x="0" y="0" width="3440" height="1440" />
     </state>
@@ -374,21 +391,6 @@
           <url>file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php</url>
           <line>738</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/Order.php</url>
-          <line>48</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/Order.php</url>
-          <line>46</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/Order.php</url>
-          <line>45</line>
-          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
