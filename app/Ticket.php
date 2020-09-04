@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Order $order
+ * @property-read \App\Concert $concert
  * @method static \Illuminate\Database\Eloquent\Builder|Ticket newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Ticket newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Ticket query()
@@ -31,11 +32,18 @@ class Ticket extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function order()
+   /* public function order()
     {
         return $this->belongsTo(Order::class);
-    }
+    }*/
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function concert()
+    {
+        return $this->belongsTo(Concert::class);
+    }
 
     /**
      * @param  \Illuminate\Database\Eloquent\Builder  $query
@@ -53,5 +61,13 @@ class Ticket extends Model
     {
         //$this->order_id = null;
         $this->update(['order_id' => null]);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\HigherOrderBuilderProxy|mixed
+     */
+    public function getPriceAttribute()
+    {
+        return $this->concert->ticket_price;
     }
 }

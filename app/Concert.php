@@ -57,7 +57,6 @@ class Concert extends Model
     // Make our date field be auto-casted back to a carbon date
     protected $dates = ['date'];
 
-
     /**
      * @description magic method to retrieve the date in formatted form
      * @return string
@@ -108,7 +107,7 @@ class Concert extends Model
      */
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsToMany(Order::class, 'tickets');
     }
 
 
@@ -127,19 +126,32 @@ class Concert extends Model
      */
     public function orderTickets($email, $ticketQuantity)
     {
+        $tickets = $this->findTickets($ticketQuantity);
+        return $this->createOrder($email, $tickets);
+    }
 
+
+    /**
+     * @param $ticketQuantity
+     * @return mixed
+     */
+    public function findTickets($ticketQuantity)
+    {
         $tickets = $this->tickets()->available()->take($ticketQuantity)->get();
-
         if ($tickets->count() < $ticketQuantity) {
             throw new NotEnoughTicketsException();
         }
+        return $tickets;
+    }
 
-        $order = $this->orders()->create(['email' => $email]);
-
-        foreach ($tickets as $ticket) {
-            $order->tickets()->save($ticket);
-        }
-        return $order;
+    /**
+     * @param $email
+     * @param $tickets
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function createOrder($email, $tickets)
+    {
+        return Order::forTickets($tickets, $email);
     }
 
     /**

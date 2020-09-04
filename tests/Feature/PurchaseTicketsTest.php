@@ -58,11 +58,11 @@ class PurchaseTicketsTest extends BrowserKitTestCase
      */
     public function customer_can_purchase_tickets_to_a_published_concert()
     {
+        $this->disableExceptionHandling();
 
         // Arrange
         // Create a concert
         $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250])->addTickets(3);
-
 
         // Act
         // Purchase concert tickets
@@ -75,6 +75,16 @@ class PurchaseTicketsTest extends BrowserKitTestCase
         // Assert
         $this->assertResponseStatus(201);
 
+        // Make some assertions about the json data we want to get back...
+        $this->response->assertJson(
+            [
+                'email' => 'john@example.com',
+                'ticket_quantity' => 3,
+                'amount' => 9750
+            ]
+        );
+
+
         // Make sure the customer was charged the correct amount
         $this->assertEquals(9750, $this->paymentGateway->totalCharges());
 
@@ -83,7 +93,6 @@ class PurchaseTicketsTest extends BrowserKitTestCase
 
         // Make sure there's 3 tickets in the order
         $this->assertEquals(3, $concert->ordersFor( 'john@example.com')->first()->ticketQuantity());
-
 
     }
 
