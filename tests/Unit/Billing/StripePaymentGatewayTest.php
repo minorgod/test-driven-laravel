@@ -11,6 +11,7 @@ use Tests\TestCase;
 /**
  * Class StripePaymentGatewayTest
  * @package Billing
+ * @group integration
  */
 class StripePaymentGatewayTest extends TestCase
 {
