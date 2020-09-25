@@ -14,7 +14,8 @@
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.24",
         "laravel/tinker": "^2.0",
-        "stripe/stripe-php": "^7.56"
+        "stripe/stripe-php": "^7.56",
+        "zondicons/blade-bridge": "^0.1.7"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.8",
