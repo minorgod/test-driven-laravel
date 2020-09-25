@@ -6,12 +6,20 @@ use App\Concert;
 
 class ConcertsController extends Controller
 {
-    function show($id){
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show($id)
+    {
         $concert = Concert::published()->findOrFail($id);
-        return view('concerts.show', ['concert'=>$concert]);
+        return view('concerts.show', ['concert' => $concert]);
     }
 
-    function order($id) {
-
+    /**
+     * @param $id
+     */
+    public function order($id)
+    {
     }
 }

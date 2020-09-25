@@ -5,51 +5,6 @@ namespace App;
 use App\Exceptions\NotEnoughTicketsException;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\Concert
- *
- * @property int $id
- * @property string $title
- * @property string $subtitle
- * @property \Illuminate\Support\Carbon $date
- * @property int $ticket_price
- * @property string $venue
- * @property string $venue_address
- * @property string $city
- * @property string $state
- * @property string $zip
- * @property string $additional_information
- * @property string|null $published_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $formatted_date
- * @property-read mixed $formatted_start_time
- * @property-read mixed $ticket_price_in_dollars
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
- * @property-read int|null $orders_count
- * @method static \Illuminate\Database\Eloquent\Builder|Concert newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Concert newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Concert published()
- * @method static \Illuminate\Database\Eloquent\Builder|Concert query()
- * @method static \Illuminate\Database\Eloquent\Builder|Concert unpublished()
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereAdditionalInformation($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereCity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert wherePublishedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereState($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereSubtitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereTicketPrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereVenue($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereVenueAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Concert whereZip($value)
- * @mixin \Illuminate\Database\Eloquent\Builder
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Ticket[] $tickets
- * @property-read int|null $tickets_count
- */
 class Concert extends Model
 {
     // This is generally safe as long as you don't pass in user input into the constructor of your models
@@ -143,6 +98,20 @@ class Concert extends Model
         }
         return $tickets;
     }
+
+
+    /**
+     * @param $quantity
+     * @return \App\Reservation
+     */
+    public function reserveTickets($quantity)
+    {
+        $tickets = $this->findTickets($quantity)->each(function ($ticket) {
+            $ticket->reserve();
+        });
+        return new Reservation($tickets);
+    }
+
 
     /**
      * @param $email

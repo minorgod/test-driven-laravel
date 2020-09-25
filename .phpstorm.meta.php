@@ -1762,6 +1762,7 @@ namespace PHPSTORM_META {
     override(\factory(0), map([
         '' => '@FactoryBuilder',
             'App\Concert' => \App\ConcertFactoryBuilder::class,
+            'App\Ticket' => \App\TicketFactoryBuilder::class,
             'App\User' => \App\UserFactoryBuilder::class,
         ]));
 

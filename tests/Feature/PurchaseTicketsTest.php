@@ -34,7 +34,14 @@ class PurchaseTicketsTest extends BrowserKitTestCase
      */
     private function orderTickets($concert, $params)
     {
+        // save the request so any subrequests don't stomp on it
+        $savedRequest = $this->app['request'];
+
         $this->json('POST', "/concerts/{$concert->id}/orders", $params);
+
+        //restore the original request
+        $this->app['request'] = $savedRequest;
+
     }
 
     /**
@@ -92,7 +99,7 @@ class PurchaseTicketsTest extends BrowserKitTestCase
         $this->assertTrue($concert->hasOrderFor('john@example.com'));
 
         // Make sure there's 3 tickets in the order
-        $this->assertEquals(3, $concert->ordersFor( 'john@example.com')->first()->ticketQuantity());
+        $this->assertEquals(3, $concert->ordersFor('john@example.com')->first()->ticketQuantity());
 
     }
 
@@ -133,7 +140,7 @@ class PurchaseTicketsTest extends BrowserKitTestCase
         $this->disableExceptionHandling();
         // Arrange
         // Create a concert
-        $concert = factory(Concert::class)->states('published')->create()->addTickets(3);
+        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250])->addTickets(3);
 
         // Act
         // Purchase concert tickets
@@ -148,6 +155,9 @@ class PurchaseTicketsTest extends BrowserKitTestCase
 
         // Make sure that an order does not exists for this customer
         $this->assertFalse($concert->hasOrderFor('john@example.com'));
+
+        // make sure there's still 3 tickets available
+        $this->assertEquals(3, $concert->ticketsRemaining());
     }
 
     /** @test */
@@ -181,6 +191,69 @@ class PurchaseTicketsTest extends BrowserKitTestCase
 
         //make sure there's still 50 tickets left
         $this->assertEquals(50, $concert->ticketsRemaining());
+    }
+
+    /** @test */
+    public function cannot_purchase_tickets_another_customer_is_already_trying_to_purchase()
+    {
+        // Use laravel subrequests to simulate a race condition
+
+        // Initiate request A
+        //      Initiate request B
+        // Request A finishes
+        //      Request B finishes
+
+        // find tickets for person A
+
+            // find tickets for person B
+            //attempt to charge person B
+            //create and order for person B
+
+        //attempt to charge person A
+
+        //create and order for person A
+
+        $this->disableExceptionHandling();
+
+        $concert = factory(Concert::class)
+            ->states('published')->create(['ticket_price'=>1200])
+            ->addTickets(3);
+
+        $this->paymentGateway->beforeFirstCharge(function($paymentGateway) use ($concert){
+
+            $this->orderTickets($concert, [
+                'email' => 'personB@example.com',
+                'ticket_quantity' => 1,
+                'payment_token' => $this->paymentGateway->getValidTestToken(),
+            ]);
+
+            //assert there is a 422 error response
+            $this->assertResponseStatus(422);
+            //assert that they don't have an order
+            $this->assertFalse($concert->hasOrderFor('personB@example.com'));
+            //assert that they were not charged
+            $this->assertEquals(0, $this->paymentGateway->totalCharges());
+        });
+
+
+
+        $this->orderTickets($concert, [
+            'email' => 'personA@example.com',
+            'ticket_quantity' => 3,
+            'payment_token' => $this->paymentGateway->getValidTestToken(),
+        ]);
+
+
+
+        // Make sure the customer was charged the correct amount
+        $this->assertEquals(3600, $this->paymentGateway->totalCharges());
+
+        // Make sure that an order exists for this customer
+        $this->assertTrue($concert->hasOrderFor('personA@example.com'));
+
+        // Make sure there's 3 tickets in the order
+        $this->assertEquals(3, $concert->ordersFor('personA@example.com')->first()->ticketQuantity());
+
     }
 
     /** @test */

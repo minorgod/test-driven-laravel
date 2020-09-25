@@ -17866,6 +17866,13 @@ namespace App {
 }
 namespace App {
     /**
+    * @method \Illuminate\Database\Eloquent\Collection|Ticket[]|Ticket create($attributes = [])
+    * @method \Illuminate\Database\Eloquent\Collection|Ticket[]|Ticket make($attributes = [])
+    */
+    class TicketFactoryBuilder extends \Illuminate\Database\Eloquent\FactoryBuilder {}
+}
+namespace App {
+    /**
     * @method \Illuminate\Database\Eloquent\Collection|User[]|User create($attributes = [])
     * @method \Illuminate\Database\Eloquent\Collection|User[]|User make($attributes = [])
     */

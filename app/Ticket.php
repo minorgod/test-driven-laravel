@@ -2,27 +2,10 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\Ticket
- *
- * @property int $id
- * @property int $order_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Order $order
- * @property-read \App\Concert $concert
- * @method static \Illuminate\Database\Eloquent\Builder|Ticket newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Ticket newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Ticket query()
- * @method static \Illuminate\Database\Eloquent\Builder|Ticket whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Ticket whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Ticket whereOrderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Ticket whereUpdatedAt($value)
- * @mixin \Illuminate\Database\Eloquent\Builder
- * @method static \Illuminate\Database\Eloquent\Builder|Ticket available()
- */
+
 class Ticket extends Model
 {
 
@@ -32,10 +15,10 @@ class Ticket extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-   /* public function order()
-    {
-        return $this->belongsTo(Order::class);
-    }*/
+    /* public function order()
+     {
+         return $this->belongsTo(Order::class);
+     }*/
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -46,12 +29,12 @@ class Ticket extends Model
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeAvailable(\Illuminate\Database\Eloquent\Builder $query)
     {
-        return $query->whereNull('order_id');
+        return $query->whereNull('order_id')->whereNull('reserved_at');
     }
 
     /**
@@ -59,8 +42,7 @@ class Ticket extends Model
      */
     public function release()
     {
-        //$this->order_id = null;
-        $this->update(['order_id' => null]);
+        $this->update(['reserved_at' => null]);
     }
 
     /**
@@ -69,5 +51,10 @@ class Ticket extends Model
     public function getPriceAttribute()
     {
         return $this->concert->ticket_price;
+    }
+
+    public function reserve()
+    {
+        $this->update(['reserved_at' => Carbon::now()]);
     }
 }
