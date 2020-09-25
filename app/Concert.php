@@ -163,4 +163,9 @@ class Concert extends Model
     {
         return $this->orders()->where('email', $customerEmail)->get();
     }
+
+
+    public function hasPoster(){
+        return false;
+    }
 }
