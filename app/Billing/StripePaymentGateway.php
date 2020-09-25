@@ -3,6 +3,7 @@
 namespace App\Billing;
 
 use Stripe\Charge;
+use Stripe\Exception\ApiErrorException;
 
 class StripePaymentGateway implements PaymentGateway
 {
@@ -22,15 +23,19 @@ class StripePaymentGateway implements PaymentGateway
 
     public function charge($amount, $token)
     {
-        Charge::create(
-            [
-            'amount' => $amount,
-            'currency' => 'usd',
-            'source' => $token,
-            //'description' => '',
-            ],
-            ['api_key' => $this->api_key]
-        );
+        try {
+            Charge::create(
+                [
+                    'amount' => $amount,
+                    'currency' => 'usd',
+                    'source' => $token,
+                    //'description' => '',
+                ],
+                ['api_key' => $this->api_key]
+            );
+        } catch (ApiErrorException $e) {
+            throw new PaymentFailedException();
+        }
     }
 
     public function totalCharges()
