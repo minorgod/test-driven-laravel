@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Order;
 /**
  * Class Reservation
  * @package App
@@ -32,6 +32,14 @@ class Reservation
         return $this->tickets->sum('price');
     }
 
+
+    /**
+     * @return \App\Order|\Illuminate\Database\Eloquent\Model
+     */
+    public function complete()
+    {
+        return Order::forTickets($this->tickets, $this->email, $this->totalCost());
+    }
 
     /**
      * @return void

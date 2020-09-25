@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Concert;
 use App\Exceptions\NotEnoughTicketsException;
 use App\Order;
+use App\Reservation;
 use Carbon\Carbon;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -38,21 +39,8 @@ class OrderTest extends TestCase
         $this->assertEquals(3600, $order->amount);
         $this->assertEquals(2, $concert->ticketsRemaining());
 
-       /* $result = $order->toArray();
-
-        $this->assertEquals(
-            [
-                'id' => $order->id,
-                'concert_id' => $order->concert_id,
-                'email' => $order->email,
-                'ticket_quantity' => $order->ticketQuantity(),
-                'amount' => 6000,
-                'created_at' => $order->created_at,
-                'updated_at' => $order->updated_at,
-            ],
-            $result
-        );*/
     }
+
 
     /** @test */
     public function converting_to_an_array()

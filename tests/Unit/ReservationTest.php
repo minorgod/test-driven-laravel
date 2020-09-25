@@ -3,8 +3,6 @@
 namespace Tests\Unit;
 
 use App\Concert;
-use App\Exceptions\NotEnoughTicketsException;
-use App\Order;
 use App\Reservation;
 use App\Ticket;
 use Carbon\Carbon;
@@ -20,6 +18,7 @@ use Tests\TestCase;
 class ReservationTest extends TestCase
 {
 
+    use DatabaseMigrations;
     /**
      * Unit tests for Reservation model.
      */
@@ -90,13 +89,25 @@ class ReservationTest extends TestCase
 
         $reservation->cancel();
 
-        foreach($tickets as $ticket){
+        foreach ($tickets as $ticket) {
             $ticket->shouldHaveReceived('release');
         }
 
 
     }
 
+    /** @test */
+    public function completing_a_reservation()
+    {
 
+        $concert = factory(Concert::class)->create(['ticket_price'=>1200])->addTickets(5);
+        $reservation = new Reservation($concert->findTickets(3), 'john@example.com');
+
+        $order = $reservation->complete();
+
+        $this->assertEquals('john@example.com', $order->email);
+        $this->assertEquals(3, $order->ticketQuantity());
+        $this->assertEquals(3600, $order->amount);
+    }
 
 }

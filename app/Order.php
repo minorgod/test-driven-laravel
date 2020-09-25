@@ -24,6 +24,7 @@ class Order extends Model
         return $order;
     }
 
+
     public function concert()
     {
         return $this->belongsTo(Concert::class);
