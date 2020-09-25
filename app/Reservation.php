@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Billing\PaymentGateway;
 use Illuminate\Database\Eloquent\Model;
 use App\Order;
 /**
@@ -36,8 +37,9 @@ class Reservation
     /**
      * @return \App\Order|\Illuminate\Database\Eloquent\Model
      */
-    public function complete()
+    public function complete(PaymentGateway $paymentGateway, $token)
     {
+        $paymentGateway->charge($this->totalCost(), $token);
         return Order::forTickets($this->tickets, $this->email, $this->totalCost());
     }
 
